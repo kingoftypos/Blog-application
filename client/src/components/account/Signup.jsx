@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { API } from '../../services/api';
 
 const Signup = () => {
 
@@ -13,6 +14,12 @@ const Signup = () => {
   function setInput(e)
   {
     setUser({...user,[e.target.name]:e.target.value});
+  }
+
+
+  const signupUser=async ()=>{
+   let res=await API.userSignup(user);
+
   }
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
@@ -38,7 +45,7 @@ const Signup = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form>
+          <form onSubmit={signupUser}>
           <div>
               <label name ="name" htmlFor="name" onChange={(e)=>setInput(e)}className="block text-sm font-medium leading-5 text-gray-700">
                 Name
