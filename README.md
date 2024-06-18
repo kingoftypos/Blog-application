@@ -121,7 +121,7 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 This project is licensed under the MIT License.
 
 ## Contact
-If you have any questions or feedback, please feel free to contact me at [your-email@example.com].
+If you have any questions or feedback, please feel free to contact me at [mshreyansh121@gmail.com].
 
 ---
 
