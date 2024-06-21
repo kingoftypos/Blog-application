@@ -1,8 +1,37 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { API } from '../../services/api';
 
 const Login = () => {
+let navigate=useNavigate();
+  let initialValue={
+    email:"",
+    password:""
+  }
+  const [user,setUser]=useState(initialValue);
+  function setInput(e)
+  {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  }
+
+  let setLogin=async (e)=>{
+    e.preventDefault();
+    let res=await API.userLogin(user);
+    console.log(res);
+    if(res.isSuccess)
+      {
+        navigate("/login");
+        console.log("login Successful");
+
+      }
+      else
+      {
+        console.log("error while login");
+      }
+
+
+  }
+
   return  (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -27,7 +56,7 @@ const Login = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form>
+          <form onSubmit={setLogin}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-5 text-gray-700">
                 Email address
@@ -38,6 +67,7 @@ const Login = () => {
                   name="email"
                   type="email"
                   placeholder="user@example.com"
+                  onChange={setInput}
                   required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
@@ -62,6 +92,7 @@ const Login = () => {
                   id="password"
                   name="password"
                   type="password"
+                  onChange={setInput}
                   required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />

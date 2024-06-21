@@ -1,26 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { API } from '../../services/api';
 
 const Signup = () => {
+  let navigate = useNavigate();
 
-  let initialValue={
-    name:'',
-    email:'',
-    password:''
+  let initialValue = {
+    name: '',
+    email: '',
+    password: ''
+  };
+
+  const [user, setUser] = useState(initialValue);
+
+  function setInput(e) {
+    setUser({ ...user, [e.target.name]: e.target.value });
   }
 
-  const [user,setUser]=useState(initialValue);
+  const signupUser = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+    let res = await API.userSignup(user);
+    console.log(res);
+    if (res.isSuccess) {
+      console.log("loginsuccessful");
+      navigate('/login');
+    } else {
+      console.log('Error while signing up');
+    }
+  };
 
-  function setInput(e)
-  {
-    setUser({...user,[e.target.name]:e.target.value});
-  }
-
-
-  const signupUser=async ()=>{
-   let res=await API.userSignup(user);
-
-  }
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 px-6">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -46,8 +54,11 @@ const Signup = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form onSubmit={signupUser}>
-          <div>
-              <label name ="name" htmlFor="name" onChange={(e)=>setInput(e)}className="block text-sm font-medium leading-5 text-gray-700">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium leading-5 text-gray-700"
+              >
                 Name
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -56,11 +67,17 @@ const Signup = () => {
                   name="name"
                   type="text"
                   placeholder="name"
+                  value={user.name}
+                  onChange={setInput}
                   required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
                 <div className="hidden absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="h-5 w-5 text-red-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path
                       fillRule="evenodd"
                       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
@@ -71,9 +88,11 @@ const Signup = () => {
               </div>
             </div>
 
-
             <div>
-              <label htmlFor="email" onChange={(e)=>setInput(e)} name="email"className="block text-sm pt-5 font-medium leading-5 text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm pt-5 font-medium leading-5 text-gray-700"
+              >
                 Email address
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -82,11 +101,17 @@ const Signup = () => {
                   name="email"
                   type="email"
                   placeholder="user@example.com"
+                  value={user.email}
+                  onChange={setInput}
                   required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
                 <div className="hidden absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="h-5 w-5 text-red-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path
                       fillRule="evenodd"
                       d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
@@ -96,9 +121,12 @@ const Signup = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-6">
-              <label htmlFor="password" onChange={(e)=>setInput(e)} name="password"className="block text-sm font-medium leading-5 text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium leading-5 text-gray-700"
+              >
                 Password
               </label>
               <div className="mt-1 rounded-md shadow-sm">
@@ -106,6 +134,8 @@ const Signup = () => {
                   id="password"
                   name="password"
                   type="password"
+                  value={user.password}
+                  onChange={setInput}
                   required
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
                 />
@@ -121,12 +151,13 @@ const Signup = () => {
                   value="1"
                   className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
                 />
-                <label htmlFor="remember_me" className="ml-2 block text-sm leading-5 text-gray-900">
+                <label
+                  htmlFor="remember_me"
+                  className="ml-2 block text-sm leading-5 text-gray-900"
+                >
                   Remember me
                 </label>
               </div>
-
-              
             </div>
 
             <div className="mt-6">
@@ -144,7 +175,6 @@ const Signup = () => {
       </div>
     </div>
   );
-  
-}
+};
 
-export default Signup
+export default Signup;

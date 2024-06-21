@@ -10,7 +10,7 @@ const axiosInstance=axios.create({
         "content-type":"application/json"
     }
 })
-axiosInstance.interceptors.request.use({
+axiosInstance.interceptors.request.use(
     function (config){
         return config;
     },
@@ -19,8 +19,8 @@ axiosInstance.interceptors.request.use({
         return Promise.reject(error);
     }
 
-})
-axiosInstance.interceptors.response.use({
+)
+axiosInstance.interceptors.response.use(
     function(res)
     {
         return processResponse(res);
@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use({
     {
         return Promise.reject(processError(error));
     }
-})
+)
 
 const processResponse=(res)=>{
     if(res?.status===200)
